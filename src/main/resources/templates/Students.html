@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Students</title>
+</head>
+<body>
+<div id="container">
+
+    <div>
+        <h2>All Students</h2>
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Personal code</th>
+                <th>email</th>
+                <th></th>
+            </tr>
+            <tr data-th-each="student : ${students}">
+                <td data-th-text="${student.name}"></td>
+                <td data-th-text="${student.surname}"></td>
+                <td data-th-text="${student.personalCode}">...</td>
+                <td data-th-text="${student.email}">...</td>
+                <td><a class="btn btn-light" th:href="@{/edit-student/{id}(id=${student.id})}">Edit</a>
+                    <a class="btn btn-light" th:href="@{/delete-student/{id}(id=${student.id})}">Delete</a>
+                </td>
+            </tr>
+        </table>
+
+        <br>
+        <br>
+
+    </div>
+    <br><br>
+    <div>
+        <a class="btn btn-light" th:href="@{/home}">Home</a>
+        <a class="btn btn-light" th:href="@{/add-student}">Add Student</a>
+        <a class="btn btn-light" th:href="@{/add-course}">Add Course</a>
+        <a class="btn btn-light" th:href="@{/courses}">All courses</a>
+        <form class="btn btn-light" th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

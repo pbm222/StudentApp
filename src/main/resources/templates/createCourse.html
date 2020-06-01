@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>New Student</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<div id="container">
+
+    <h3>Add course</h3>
+
+    <div>
+        <form class="table" action="#" th:action="@{/add-course}" th:object="${course}" method="post">
+            <p>Title: <input type="text" th:field="*{title}"/></p>
+            <p>Teacher: <input type="text" th:field="*{teacher}"/></p>
+            <p>Number of lessons: <input type="text" th:field="*{numberOfLectures}"/></p>
+            <p><input class="btn btn-light" type="submit" value="Save"/>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

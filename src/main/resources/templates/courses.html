@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>My Courses</title>
+</head>
+<body>
+<div id="container">
+
+    <h2>All courses:</h2>
+    <div>
+        <table class="table">
+            <tr>
+                <th>Title</th>
+                <th>Teacher</th>
+                <th>Number of lessons</th>
+                <th></th>
+            </tr>
+            <tr data-th-each="course : ${courses}">
+                <td data-th-text="${course.title}"></td>
+                <td data-th-text="${course.teacher}"></td>
+                <td data-th-text="${course.numberOfLectures}">...</td>
+                <td><a class="btn btn-light" th:href="@{/}">More</a>
+                    <a class="btn btn-light" th:href="@{/delete-course/{id}(id=${course.id})}">Delete</a>
+                    <a class="btn btn-light" th:href="@{/assign-course/{id}(id=${course.id})}">Assign to me</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <a class="btn btn-light" th:href="@{/home}">Home</a>
+    <a class="btn btn-light" th:href="@{/add-course}">Add Course</a>
+
+
+</div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>New Student</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<div id="container">
+
+    <h3>Add new student</h3>
+
+    <div>
+        <form class="table" action="#" th:action="@{/add-student}" th:object="${student}" method="post">
+            <p>Name: <input type="text" th:field="*{name}"/></p>
+            <p>Surname: <input type="text" th:field="*{surname}"/></p>
+            <p>Personal code: <input type="text" th:field="*{personalCode}"/></p>
+            <p><span th:if="${#fields.hasErrors('personalCode')}" th:errors="*{personalCode}">Incorrect code</span></p>
+            <p>Email: <input type="text" th:field="*{email}"/></p>
+            <p><input class="btn btn-light" type="submit" value="Save"/> <input type="reset" value="Reset"/></p>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>
