@@ -17,4 +17,5 @@ import java.util.Optional;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class GenericDaoImpl<T> extends AbstractDao<T> implements Dao<T>{
 
+
 }
