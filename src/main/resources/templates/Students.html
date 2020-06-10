@@ -6,9 +6,17 @@
     <title>Students</title>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="btn btn-light" th:href="@{/student/students}">All students</a>
+    <a class="btn btn-light" th:href="@{/course/courses}">All Courses</a>
+    <form th:action="@{/logout}" method="post">
+        <input class="btn btn-light" type="submit" value="Sign Out"/>
+    </form>
+</nav>
 <div id="container">
 
-    <div>
+    <div class="row">
+        <div class="col">
         <h2>All Students</h2>
         <table class="table">
             <tr>
@@ -23,8 +31,8 @@
                 <td data-th-text="${student.surname}"></td>
                 <td data-th-text="${student.personalCode}">...</td>
                 <td data-th-text="${student.email}">...</td>
-                <td><a class="btn btn-light" th:href="@{/edit-student/{id}(id=${student.id})}">Edit</a>
-                    <a class="btn btn-light" th:href="@{/delete-student/{id}(id=${student.id})}">Delete</a>
+                <td><a class="btn btn-light" th:href="@{/student/edit-student/{id}(id=${student.id})}">Edit</a>
+                    <a class="btn btn-light" th:href="@{/student/delete-student/{id}(id=${student.id})}">Delete</a>
                 </td>
             </tr>
         </table>
@@ -33,15 +41,17 @@
         <br>
 
     </div>
-    <br><br>
+
+        <div class="col">
+
+
+
+
+
+        </div>
+    </div>
     <div>
-        <a class="btn btn-light" th:href="@{/home}">Home</a>
-        <a class="btn btn-light" th:href="@{/add-student}">Add Student</a>
-        <a class="btn btn-light" th:href="@{/add-course}">Add Course</a>
-        <a class="btn btn-light" th:href="@{/courses}">All courses</a>
-        <form class="btn btn-light" th:action="@{/logout}" method="post">
-            <input type="submit" value="Sign Out"/>
-        </form>
+        <a class="btn btn-light" th:href="@{/student/add-student}">Add Student</a>
     </div>
 
 </div>

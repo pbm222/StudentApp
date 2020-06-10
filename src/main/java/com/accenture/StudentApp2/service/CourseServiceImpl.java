@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,6 @@ public class CourseServiceImpl implements com.accenture.StudentApp2.service.Serv
     @Override
     //@Cacheable("courses")
     public List<Course> findAll() {
-        //courseDao.setClazz(Course.class);
         return courseDao.findAll();
     }
 
@@ -53,5 +53,19 @@ public class CourseServiceImpl implements com.accenture.StudentApp2.service.Serv
     @Transactional
     public void deleteById(Long id) {
         courseDao.deleteById(id);
+    }
+
+
+    public List<Course> findByName(String name) {
+        List<Course> courses = courseDao.findAll();
+        List<Course> sortedCourses = new ArrayList<>();
+
+        courses.forEach(course -> {
+            if (course.getTitle().contains(name)){
+                sortedCourses.add(course);
+            }
+        });
+
+        return sortedCourses;
     }
 }

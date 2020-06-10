@@ -1,8 +1,14 @@
 package com.accenture.StudentApp2.dao;
 
+import com.accenture.StudentApp2.model.Student;
+
+import javax.jms.Session;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +34,6 @@ public abstract class AbstractDao<T> {
         return Optional.ofNullable(entityManager.find(clazz, id));
     }
 
-
     public void save(T t) {
         entityManager.persist(t);
     }
@@ -37,6 +42,12 @@ public abstract class AbstractDao<T> {
         T dbStudent = entityManager.merge(t);
         //t.setId(dbStudent.getId());
 
+    }
+
+    public Optional<T> getBy(String queryParameter){
+        Query query = entityManager.createQuery("SELECT s FROM Student s WHERE s.email=:Email");
+        query.setParameter("Email", queryParameter);
+        return (Optional<T>) query.getSingleResult();
     }
 
     public void deleteById(Long id) {

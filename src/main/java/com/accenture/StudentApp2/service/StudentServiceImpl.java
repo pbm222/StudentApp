@@ -33,6 +33,11 @@ public class StudentServiceImpl implements Service<Student> {
         return studentDao.getById(id);
     }
 
+    public Optional<Student> getByEmail(String email){
+        Optional<Student> student = studentDao.getBy(email);
+        return student;
+    }
+
     @Override
     @Transactional
     public void save(Student student) {

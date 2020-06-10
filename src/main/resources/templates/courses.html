@@ -6,8 +6,17 @@
     <title>My Courses</title>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" th:href="@{/student/students}">All students</a>
+    <a class="navbar-brand" th:href="@{/course/courses}">All Courses</a>
+    <form th:action="@{/logout}" method="post">
+        <input class="btn btn-light" type="submit" value="Sign Out"/>
+    </form>
+</nav>
 <div id="container">
 
+    <div class="row">
+        <div class="col">
     <h2>All courses:</h2>
     <div>
         <table class="table">
@@ -22,14 +31,26 @@
                 <td data-th-text="${course.teacher}"></td>
                 <td data-th-text="${course.numberOfLectures}">...</td>
                 <td><a class="btn btn-light" th:href="@{/}">More</a>
-                    <a class="btn btn-light" th:href="@{/delete-course/{id}(id=${course.id})}">Delete</a>
-                    <a class="btn btn-light" th:href="@{/assign-course/{id}(id=${course.id})}">Assign to me</a>
+                    <a class="btn btn-light" th:href="@{/course/delete-course/{id}(id=${course.id})}">Delete</a>
+                    <a class="btn btn-light" th:href="@{/course/assign-course/{id}(id=${course.id})}">Assign to me</a>
                 </td>
             </tr>
         </table>
     </div>
-    <a class="btn btn-light" th:href="@{/home}">Home</a>
-    <a class="btn btn-light" th:href="@{/add-course}">Add Course</a>
+        </div>
+
+        <div class="col">
+
+            <form th:action="@{/course/search}" method="get">
+                <input type="text" name="title" id="title" th:value="${title}"/>
+                <input class="btn btn-light" type="submit" value="Search"/>
+            </form>
+
+        </div>
+    </div>
+
+
+    <a class="btn btn-light" th:href="@{/course/add-course}">Add Course</a>
 
 
 </div>

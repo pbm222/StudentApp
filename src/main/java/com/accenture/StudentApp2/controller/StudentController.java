@@ -3,18 +3,24 @@ package com.accenture.StudentApp2.controller;
 import com.accenture.StudentApp2.model.Student;
 import com.accenture.StudentApp2.service.CourseServiceImpl;
 import com.accenture.StudentApp2.service.StudentServiceImpl;
+import com.accenture.StudentApp2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
+@RequestMapping(value = "/student")
 public class StudentController {
 
     @Autowired
@@ -23,10 +29,18 @@ public class StudentController {
     @Autowired
     private CourseServiceImpl courseService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
 
     @GetMapping("/students")
     public String getAllStudents(Model model){
         model.addAttribute("students", studentService.findAll());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth.getName());
         //model.addAttribute("courses", courseService.findAll());
         return "students";
     }
@@ -44,7 +58,7 @@ public class StudentController {
             return "createStudent";
         }else {
             studentService.save(student);
-            return "redirect:/students";
+            return "redirect:/student/students";
         }
     }
 
@@ -62,14 +76,14 @@ public class StudentController {
         }else {
             studentToEdit.setId(id);
             studentService.update(studentToEdit);
-            return "redirect:/students";
+            return "redirect:/student/students";
         }
     }
 
     @GetMapping("/delete-student/{id}")
     public String deleteStudent(@PathVariable Long id){
         studentService.deleteById(id);
-        return "redirect:/students";
+        return "redirect:/student/students";
     }
 
 }

@@ -18,7 +18,7 @@ public class Course {
     private String teacher;
     private int numberOfLectures;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "courses")
     private Set<Student> students;
 
 

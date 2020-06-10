@@ -1,5 +1,6 @@
 package com.accenture.StudentApp2.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -10,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "Student")
-@Data @NoArgsConstructor
+@Data @NoArgsConstructor @AllArgsConstructor
 public class Student {
 
     @Id
@@ -18,7 +19,7 @@ public class Student {
     private Long id;
     private String name;
     private String surname;
-    @NonNull @Size(min = 10, max = 11, message = "Insert correct personas kods")
+    //@NonNull @Size(min = 10, max = 11, message = "Insert correct personas kods")
     private String personalCode;
     private String email;
 
