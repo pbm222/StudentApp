@@ -1,5 +1,6 @@
 package com.accenture.StudentApp2.controller;
 
+import com.accenture.StudentApp2.model.Course;
 import com.accenture.StudentApp2.model.Student;
 import com.accenture.StudentApp2.service.CourseServiceImpl;
 import com.accenture.StudentApp2.service.StudentServiceImpl;
@@ -11,12 +12,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -41,7 +40,6 @@ public class StudentController {
         model.addAttribute("students", studentService.findAll());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(auth.getName());
-        //model.addAttribute("courses", courseService.findAll());
         return "students";
     }
 
@@ -84,6 +82,13 @@ public class StudentController {
     public String deleteStudent(@PathVariable Long id){
         studentService.deleteById(id);
         return "redirect:/student/students";
+    }
+
+    @GetMapping("/search")
+    public String searchStudent(Model model, @RequestParam String title) {
+        List<Student> students = studentService.getListByNameOrSurname(title);
+        model.addAttribute("students", students);
+        return "students";
     }
 
 }

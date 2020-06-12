@@ -1,6 +1,7 @@
 package com.accenture.StudentApp2;
 
 
+import com.accenture.StudentApp2.eventHandler.UserEventHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
@@ -33,6 +34,11 @@ public class StudentApp2Application {
 	public static void main(String[] args) {
 
 		SpringApplication.run(StudentApp2Application.class, args);
+	}
+
+	@Bean
+	UserEventHandler userEventHandler(){
+		return new UserEventHandler();
 	}
 
 }

@@ -50,9 +50,12 @@ public class UserService implements com.accenture.StudentApp2.service.Service<Us
     @Transactional
     public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setActive(true);
-        Role userRole = roleRepository.findByRole("ADMIN");
+        //user.setActive(true);
+
+        Role userRole = roleRepository.findByRole("USER");
+        List<Role> roles = roleRepository.findAll();
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        //user.setRoles(new HashSet<>(roles));
         userRepository.save(user);
     }
 
@@ -63,9 +66,8 @@ public class UserService implements com.accenture.StudentApp2.service.Service<Us
 
     @Override
     public void deleteById(Long id) {
-
+        userRepository.deleteById(id);
     }
-
 
 
 }

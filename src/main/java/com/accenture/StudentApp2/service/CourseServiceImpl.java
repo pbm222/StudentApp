@@ -3,6 +3,7 @@ package com.accenture.StudentApp2.service;
 import com.accenture.StudentApp2.dao.GenericDaoImpl;
 import com.accenture.StudentApp2.dao.separateDao.CourseDaoImpl;
 import com.accenture.StudentApp2.model.Course;
+import com.accenture.StudentApp2.model.Student;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -34,7 +35,7 @@ public class CourseServiceImpl implements com.accenture.StudentApp2.service.Serv
 
     @Override
     public Optional<Course> getById(Long id) {
-        return Optional.empty();
+        return courseDao.getById(id);
     }
 
     @Override
@@ -52,20 +53,17 @@ public class CourseServiceImpl implements com.accenture.StudentApp2.service.Serv
     @Override
     @Transactional
     public void deleteById(Long id) {
+        Course course = courseDao.getById(id).get();
+        course.getStudents().forEach(student -> student.getCourses().remove(course));
+
         courseDao.deleteById(id);
     }
 
 
-    public List<Course> findByName(String name) {
-        List<Course> courses = courseDao.findAll();
-        List<Course> sortedCourses = new ArrayList<>();
-
-        courses.forEach(course -> {
-            if (course.getTitle().contains(name)){
-                sortedCourses.add(course);
-            }
-        });
-
-        return sortedCourses;
+    public List<Course> getListByTitle(String title) {
+        String query = "SELECT c FROM Course c WHERE LOWER(c.title) LIKE LOWER('" + title + "%') OR LOWER(c.teacher) LIKE LOWER('"+ title + "%')"; //like '%inna%'---starts with:-
+        List<Course> courseList = courseDao.getListBy(query);
+        return courseList;
     }
+
 }

@@ -3,3 +3,4 @@ INSERT INTO STUDENT (id, name, surname, personal_code, email) VALUES (1, 'John',
 INSERT INTO roles VALUES (1,'ADMIN');
 INSERT INTO roles VALUES (2,'USER');
 
+

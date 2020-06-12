@@ -2,23 +2,36 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>My Courses</title>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" th:href="@{/student/students}">All students</a>
     <a class="navbar-brand" th:href="@{/course/courses}">All Courses</a>
-    <form th:action="@{/logout}" method="post">
-        <input class="btn btn-light" type="submit" value="Sign Out"/>
+
+    <form style="align:right" class="navbar-brand" th:action="@{/logout}" method="post">
+        <input class="navbar-brand" type="submit" value="Sign Out"/>
+    </form>
+
+    <form style="align:right" class="form-inline" th:action="@{/course/search}" method="get">
+        <input type="text" name="title" id="title" th:value="${title}"/>
+        <input class="btn btn-light" type="submit" value="Search"/>
     </form>
 </nav>
-<div id="container">
+<div class="container">
 
     <div class="row">
-        <div class="col">
-    <h2>All courses:</h2>
-    <div>
+        <h4 th:text="${param.assign}"></h4>
+    </div>
+
+    <div class="row">
+        <!--<div class="col">-->
+        <h2>All courses:</h2>
+    </div>
+
+    <div class="row">
         <table class="table">
             <tr>
                 <th>Title</th>
@@ -30,27 +43,18 @@
                 <td data-th-text="${course.title}"></td>
                 <td data-th-text="${course.teacher}"></td>
                 <td data-th-text="${course.numberOfLectures}">...</td>
-                <td><a class="btn btn-light" th:href="@{/}">More</a>
+                <td><a class="btn btn-light" th:href="@{/}">About</a>
                     <a class="btn btn-light" th:href="@{/course/delete-course/{id}(id=${course.id})}">Delete</a>
-                    <a class="btn btn-light" th:href="@{/course/assign-course/{id}(id=${course.id})}">Assign to me</a>
+                    <a class="btn btn-light" th:href="@{/course/assign-course/{id}(id=${course.id})}">Assign to
+                        me</a>
                 </td>
             </tr>
         </table>
     </div>
-        </div>
+    <div class="row">
+        <a class="btn btn-light" th:href="@{/course/add-course}">Add Course</a>
 
-        <div class="col">
-
-            <form th:action="@{/course/search}" method="get">
-                <input type="text" name="title" id="title" th:value="${title}"/>
-                <input class="btn btn-light" type="submit" value="Search"/>
-            </form>
-
-        </div>
     </div>
-
-
-    <a class="btn btn-light" th:href="@{/course/add-course}">Add Course</a>
 
 
 </div>

@@ -35,8 +35,8 @@ public class LoginController {
     @Autowired
     private StudentServiceImpl studentService;
 
-  @Autowired
-  private ConfirmationTokenRepository confirmationTokenRepository;
+    @Autowired
+    private ConfirmationTokenRepository confirmationTokenRepository;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -103,22 +103,14 @@ public class LoginController {
             modelAndView.addObject("successMessage", "User has been registered successfully");
             modelAndView.setViewName("index");
 
-            Student student = new Student();
+            Student student = new Student(); //TODO: Make user a student? Should I do that?
             student.setName(user.getFirstName());
             student.setSurname(user.getLastName());
             student.setEmail(user.getEmail());
             studentService.save(student);
 
-            VerificationToken verificationToken = new VerificationToken(user);
-            confirmationTokenRepository.save(verificationToken);
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setTo(user.getEmail());
-            mailMessage.setSubject("Complete Registration!");
-            mailMessage.setFrom("innapbm@gmail.com");
-            mailMessage.setText("To confirm your account, please click here : "
-                    +"http://localhost:8080/confirm-account?token="+verificationToken.getConfirmationToken());
 
-            emailSenderService.sendEmail(mailMessage);
+            emailSenderService.sendEmail(user);
 
         }
         return modelAndView;

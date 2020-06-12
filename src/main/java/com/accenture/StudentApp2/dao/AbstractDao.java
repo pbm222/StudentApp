@@ -44,10 +44,15 @@ public abstract class AbstractDao<T> {
 
     }
 
-    public Optional<T> getBy(String queryParameter){
-        Query query = entityManager.createQuery("SELECT s FROM Student s WHERE s.email=:Email");
-        query.setParameter("Email", queryParameter);
-        return (Optional<T>) query.getSingleResult();
+    public T getBy(String queryText){
+        Query query = entityManager.createQuery(queryText);
+        //query.setParameter("Email", queryParameter);
+        return (T) query.getSingleResult();
+    }
+
+    public List<T> getListBy(String queryText){
+        Query query = entityManager.createQuery(queryText);
+        return query.getResultList();
     }
 
     public void deleteById(Long id) {

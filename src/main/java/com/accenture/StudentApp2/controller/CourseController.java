@@ -11,9 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 @RequestMapping(value = "/course")
@@ -27,48 +29,54 @@ public class CourseController {
 
 
     @GetMapping("/courses")
-    public String getAllCourses(Model model){
+    public String getAllCourses(Model model) {
         model.addAttribute("courses", courseService.findAll());
         return "courses";
     }
 
     @GetMapping("/add-course")
-    public String getCourseForm(Model model){
+    public String getCourseForm(Model model) {
         model.addAttribute("course", new Course());
         return "createCourse";
     }
 
     @PostMapping("/add-course")
-    public String saveCourse(Course course, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+    public String saveCourse(Course course, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "createCourse";
-        }else {
-           courseService.save(course);
+        } else {
+            courseService.save(course);
             return "redirect:/course/courses";
         }
     }
 
     @GetMapping("/search")
-    public String searchCourse(Model model, @RequestParam String title){
-        List<Course> courses = courseService.findByName(title);
+    public String searchCourse(Model model, @RequestParam String title) {
+        List<Course> courses = courseService.getListByTitle(title);
         model.addAttribute("courses", courses);
         return "courses";
     }
 
     @GetMapping("/assign-course/{id}")
-    public String assignCourse(@PathVariable Long id){
-        //courseService.getById(id);
-        //TODO: assign course to a logged in user/student
+    public ModelAndView assignCourse(@PathVariable Long id) {
+        ModelAndView modelAndView = new ModelAndView("redirect:/course/courses");
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean courseAssigned = studentService.assignCourseToStudent(id, auth.getName());
 
-        Optional<Student> pbm222 = studentService.getByEmail("pbm222");
-        System.out.println(auth.getName() + ". Student is acquied from DB: " + pbm222.get().getName() + " " + pbm222.get().getSurname());
+        if (courseAssigned) {
+            modelAndView.addObject("assign", "You already have this course!");
+        } else {
+            modelAndView.addObject("assign", "ASSIGNED");
+        }
 
-        return "redirect:/course/courses";
+        System.out.println("Course exists: " + courseAssigned);
+
+        return modelAndView;
     }
 
     @GetMapping("/delete-course/{id}")
-    public String deleteCourse(@PathVariable Long id){
+    public String deleteCourse(@PathVariable Long id) {
         courseService.deleteById(id);
         return "redirect:/course/courses";
     }
