@@ -54,8 +54,7 @@ public class UserService implements com.accenture.StudentApp2.service.Service<Us
 
         Role userRole = roleRepository.findByRole("USER");
         List<Role> roles = roleRepository.findAll();
-        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
-        //user.setRoles(new HashSet<>(roles));
+        //user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         userRepository.save(user);
     }
 

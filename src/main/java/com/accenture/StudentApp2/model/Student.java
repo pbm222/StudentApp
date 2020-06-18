@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name = "Student")
 @Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor @AllArgsConstructor @Builder
 public class Student {
 
     @Id

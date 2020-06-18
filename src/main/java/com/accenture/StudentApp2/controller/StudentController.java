@@ -31,9 +31,6 @@ public class StudentController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
 
     @GetMapping("/students")
     public String getAllStudents(Model model){

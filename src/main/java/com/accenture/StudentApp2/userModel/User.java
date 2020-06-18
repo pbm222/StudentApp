@@ -18,13 +18,13 @@ public class User {
     @Id @GeneratedValue
     private Long id;
 
-    @NotNull @NotEmpty
+    //@NotNull @NotEmpty
     private String username;
-    @NotNull @NotEmpty
+    //@NotNull @NotEmpty
     private String password;
     private String firstName;
     private String lastName;
-    @NotEmpty @NotNull
+    //@NotEmpty @NotNull
     private String email;
     private boolean active;
 

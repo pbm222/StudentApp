@@ -1,7 +1,10 @@
 package com.accenture.StudentApp2;
 
+import com.accenture.StudentApp2.security.FacebookConnectionSignup;
+import com.accenture.StudentApp2.security.FacebookSignInAdapter;
 import com.accenture.StudentApp2.service.userDetails.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +27,12 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.social.connect.ConnectionFactoryLocator;
+import org.springframework.social.connect.UsersConnectionRepository;
+import org.springframework.social.connect.mem.InMemoryUsersConnectionRepository;
+import org.springframework.social.connect.support.ConnectionFactoryRegistry;
+import org.springframework.social.connect.web.ProviderSignInController;
+import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
@@ -36,9 +45,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyUserDetailsService myUserDetailsService;
 
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
+    @Autowired
+    private FacebookConnectionSignup facebookConnectionSignup;
 
+    @Value("${spring.social.facebook.appSecret}")
+    String appSecret;
+
+    @Value("${spring.social.facebook.appId}")
+    String appId;
+
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        //auth.authenticationProvider(authenticationProvider());
+        auth.userDetailsService(myUserDetailsService).passwordEncoder(passwordEncoder());
     }
 
 
@@ -47,24 +65,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 //.antMatchers("/add-student", "/edit-student/{id}").hasRole("ADMIN")
                 .antMatchers("/h2-console/**", "/user/registration", "/confirm-account", "/home").permitAll()
-                .antMatchers("/**").authenticated()
+                .antMatchers("/login*", "/signin/**","/signup/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
-            .loginPage("/login").permitAll()
-                /*.oauth2Login()
                 .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/student/students")*/
                 .and()
                 .rememberMe().userDetailsService(myUserDetailsService);
 
-       // http.oauth2Login()
-                //.authorizationEndpoint();
-               //.and()
-               //.userInfoEndpoint()
+        // http.oauth2Login()
+        //.authorizationEndpoint();
+        //.and()
+        //.userInfoEndpoint()
 
         http.csrf().disable();
-                //.ignoringAntMatchers("/h2-console/**")
-                //.ignoringAntMatchers("/confirm-account");
+        //.ignoringAntMatchers("/h2-console/**")
+        //.ignoringAntMatchers("/confirm-account");
         http.headers()
                 .frameOptions()
                 .sameOrigin();
@@ -102,6 +118,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenUri("https://github.com/login/oauth/access_token")
                 .userInfoUri("https://api.github.com/user")
                 .clientName("GitHub").build();
+    }
+
+    //--Spring Social Facebook---
+    @Bean
+    public ProviderSignInController providerSignInController() {
+        ConnectionFactoryLocator connectionFactoryLocator =
+                connectionFactoryLocator();
+        UsersConnectionRepository usersConnectionRepository =
+                getUsersConnectionRepository(connectionFactoryLocator);
+        ((InMemoryUsersConnectionRepository) usersConnectionRepository)
+                .setConnectionSignUp(facebookConnectionSignup);
+        return new ProviderSignInController(connectionFactoryLocator,
+                usersConnectionRepository, new FacebookSignInAdapter());
+    }
+
+    private ConnectionFactoryLocator connectionFactoryLocator() {
+        ConnectionFactoryRegistry registry = new ConnectionFactoryRegistry();
+        registry.addConnectionFactory(new FacebookConnectionFactory(appId, appSecret));
+        return registry;
+    }
+
+    private UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator
+                                                                           connectionFactoryLocator) {
+        return new InMemoryUsersConnectionRepository(connectionFactoryLocator);
     }
 
 }
